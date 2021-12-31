@@ -1,5 +1,5 @@
 
-cub_root = '../datasets/CUB/'
+cub_root = '../../datasets/CUB/'
 images_file = cub_root + 'images.txt'
 train_file = cub_root + 'train.txt'
 test_file = cub_root + 'test.txt'

@@ -1,5 +1,5 @@
 
-hotels_root = '../datasets/hotels50k/'
+hotels_root = '../../datasets/hotels50k/'
 images_file = hotels_root + 'images.txt'
 train_file = hotels_root + 'train.txt'
 test_file = hotels_root + 'test.txt'
