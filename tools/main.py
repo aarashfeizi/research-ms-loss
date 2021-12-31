@@ -17,6 +17,7 @@ from ret_benchmark.solver import build_lr_scheduler, build_optimizer
 from ret_benchmark.utils.logger import setup_logger
 from ret_benchmark.utils.checkpoint import Checkpointer
 
+import os
 
 def train(cfg):
     logger = setup_logger(name='Train', level=cfg.LOGGER.LEVEL)
@@ -41,6 +42,9 @@ def train(cfg):
 
     checkpoint_period = cfg.SOLVER.CHECKPOINT_PERIOD
     cfg.SAVE_DIR = f'output/{cfg.DATA.DATASET_NAME}-{cfg.LOSSES.NAME}-MSsp{cfg.LOSSES.MULTI_SIMILARITY_LOSS.SCALE_POS}-MSsn{cfg.LOSSES.MULTI_SIMILARITY_LOSS.SCALE_NEG}-hm{cfg.LOSSES.MULTI_SIMILARITY_LOSS.HARD_MINING}-{cfg.MODEL.HEAD.DIM}-{cfg.MODEL.BACKBONE.NAME}-lr{cfg.SOLVER.BASE_LR}-bs{cfg.DATA.TRAIN_BATCHSIZE}/'
+    if not os.path.exists(cfg.SAVE_DIR):
+        os.makedirs(cfg.SAVE_DIR)
+
     checkpointer = Checkpointer(model, optimizer, scheduler, cfg.SAVE_DIR)
 
     do_train(
