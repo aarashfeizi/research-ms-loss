@@ -13,8 +13,8 @@
 from yacs.config import CfgNode as CN
 
 MODEL_PATH = {
-    'bninception': "~/.torch/models/bn_inception-52deb4733.pth",
-    'resnet50': "~/.torch/models/resnet50-19c8e357.pth",
+    'bninception': "~/pretrained_models/bn_inception-52deb4733.pth", # still empty
+    'resnet50': "~/pretrained_models/resnet50-0676ba61.pth",
 }
 
 MODEL_PATH = CN(MODEL_PATH)
