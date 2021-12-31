@@ -23,6 +23,7 @@ SOLVER:
   WEIGHT_DECAY: 0.0005
   
 DATA:
+  DATASET_NAME: hotels
   TRAIN_IMG_SOURCE: ../../datasets/hotels50k/train_small.txt
   TEST_IMG_SOURCE: ../../datasets/hotels50k/val1_small.txt
   TRAIN_BATCHSIZE: 80

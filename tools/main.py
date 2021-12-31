@@ -40,6 +40,7 @@ def train(cfg):
     arguments["iteration"] = 0
 
     checkpoint_period = cfg.SOLVER.CHECKPOINT_PERIOD
+    cfg.SAVE_DIR = f'output/{cfg.DATA.DATASET_NAME}-{cfg.LOSSES.NAME}-MSsp{cfg.LOSSES.MULTI_SIMILARITY_LOSS.SCALE_POS}-MSsn{cfg.LOSSES.MULTI_SIMILARITY_LOSS.SCALE_NEG}-hm{cfg.LOSSES.MULTI_SIMILARITY_LOSS.HARD_MINING}-{cfg.MODEL.HEAD.DIM}-{cfg.MODEL.BACKBONE.NAME}-lr{cfg.SOLVER.BASE_LR}-bs{cfg.DATA.TRAIN_BATCHSIZE}/'
     checkpointer = Checkpointer(model, optimizer, scheduler, cfg.SAVE_DIR)
 
     do_train(
