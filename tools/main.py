@@ -66,7 +66,7 @@ def train(cfg, train=True):
 
     model = checkpointer.load()
 
-    test_dataset_root = os.path.split(cfg.DATA.TEST_IMG_SOURCE)
+    test_dataset_root = os.path.split(cfg.DATA.TEST_IMG_SOURCE)[0]
     for type in cfg.VALIDATION.TYPES:
 
         cfg.DATA.TEST_IMG_SOURCE = os.path.join(test_dataset_root, type)
