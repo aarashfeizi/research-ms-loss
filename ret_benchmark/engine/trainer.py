@@ -10,11 +10,19 @@ import time
 
 import numpy as np
 import torch
+import h5py
+import os
 
 from ret_benchmark.data.evaluations import RetMetric
 from ret_benchmark.utils.feat_extractor import feat_extractor
 from ret_benchmark.utils.freeze_bn import set_bn_eval
 from ret_benchmark.utils.metric_logger import MetricLogger
+
+
+def __save_h5(data_description, data, data_type, path):
+    h5_feats = h5py.File(path, 'w')
+    h5_feats.create_dataset(data_description, data=data, dtype=data_type)
+    h5_feats.close()
 
 
 def do_train(
@@ -58,6 +66,7 @@ def do_train(
                 best_iteration = iteration
                 logger.info(f'Best iteration {iteration}: recall@1: {best_recall:.3f}')
                 checkpointer.save(f"best_model")
+                checkpointer.tag_last_checkpoint()
             else:
                 logger.info(f'Recall@1 at iteration {iteration:06d}: {recall_curr:.3f}')
 
@@ -117,3 +126,36 @@ def do_train(
     )
 
     logger.info(f"Best iteration: {best_iteration :06d} | best recall {best_recall} ")
+
+def save_embs(
+        cfg,
+        model,
+        val_loader,
+        logger
+):
+    logger.info(f"Saving Embeddings for {cfg.DATA.TEST_IMG_SOURCE}")
+    print(f"Saving Embeddings for {cfg.DATA.TEST_IMG_SOURCE}")
+
+    val_file_name = os.path.split(cfg.DATA.TEST_IMG_SOURCE)[1]
+    val_type = val_file_name[:val_file_name.find('.')]
+
+    model.eval()
+    logger.info('Validation (Saving Embeddings)')
+    labels = val_loader.dataset.label_list
+    labels = np.array([int(k) for k in labels])
+    feats = feat_extractor(model, val_loader, logger=logger)
+
+    ret_metric = RetMetric(feats=feats, labels=labels)
+    recall_curr = ret_metric.recall_k(1)
+
+    best_recall = recall_curr
+
+    logger.info(f'{cfg.VALIDATION.TYPE} Recall@1: {best_recall:.3f}')
+
+    save_path = cfg.SAVE_DIR
+    __save_h5('data', labels, 'i8',
+            os.path.join(save_path, f'{cfg.DATA.DATASET_NAME}_{val_type}_Classes.h5'))
+    __save_h5('data', feats.cpu().numpy(), 'f',
+            os.path.join(save_path, f'{cfg.DATA.DATASET_NAME}_{val_type}_Feats.h5'))
+
+    return True

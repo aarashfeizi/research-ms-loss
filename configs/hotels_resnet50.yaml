@@ -33,3 +33,4 @@ DATA:
 
 VALIDATION:
   VERBOSE: 200
+  TYPES: ['val1_small.txt', 'val2_small.txt', 'val3_small.txt', 'val4_small.txt']

@@ -33,3 +33,4 @@ DATA:
 
 VALIDATION:
   VERBOSE: 200
+  TYPES: ['test.txt']

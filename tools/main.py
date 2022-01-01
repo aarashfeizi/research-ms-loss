@@ -10,7 +10,7 @@ import torch
 
 from ret_benchmark.config import cfg
 from ret_benchmark.data import build_data
-from ret_benchmark.engine.trainer import do_train
+from ret_benchmark.engine.trainer import do_train, save_embs
 from ret_benchmark.losses import build_loss
 from ret_benchmark.modeling import build_model
 from ret_benchmark.solver import build_lr_scheduler, build_optimizer
@@ -19,7 +19,7 @@ from ret_benchmark.utils.checkpoint import Checkpointer
 
 import os
 
-def train(cfg):
+def train(cfg, train=True):
     logger = setup_logger(name='Train', level=cfg.LOGGER.LEVEL)
     logger.info(cfg)
     model = build_model(cfg)
@@ -47,20 +47,37 @@ def train(cfg):
 
     checkpointer = Checkpointer(model, optimizer, scheduler, cfg.SAVE_DIR)
 
-    do_train(
-        cfg,
-        model,
-        train_loader,
-        val_loader,
-        optimizer,
-        scheduler,
-        criterion,
-        checkpointer,
-        device,
-        checkpoint_period,
-        arguments,
-        logger
-    )
+    if train:
+        do_train(
+            cfg,
+            model,
+            train_loader,
+            val_loader,
+            optimizer,
+            scheduler,
+            criterion,
+            checkpointer,
+            device,
+            checkpoint_period,
+            arguments,
+            logger
+        )
+    # save embeddings after training for all val types
+
+    model = checkpointer.load()
+
+    test_dataset_root = os.path.split(cfg.DATA.TEST_IMG_SOURCE)
+    for type in cfg.VALIDATION.TYPES:
+
+        cfg.DATA.TEST_IMG_SOURCE = os.path.join(test_dataset_root, type)
+        val_loader = build_data(cfg, is_train=False)
+
+        save_embs(
+            cfg,
+            model,
+            val_loader,
+            logger)
+
 
 
 def parse_args():
@@ -74,10 +91,15 @@ def parse_args():
         help='config file',
         default=None,
         type=str)
+    parser.add_argument(
+        '-only_save',
+        '--only_save',
+        help='Train or not',
+        action='store_true')
     return parser.parse_args()
 
 
 if __name__ == '__main__':
     args = parse_args()
     cfg.merge_from_file(args.cfg_file)
-    train(cfg)
+    train(cfg, train=(not args.only_save))
