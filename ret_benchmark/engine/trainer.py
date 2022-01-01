@@ -155,7 +155,7 @@ def save_embs(
     save_path = cfg.SAVE_DIR
     __save_h5('data', labels, 'i8',
             os.path.join(save_path, f'{cfg.DATA.DATASET_NAME}_{val_type}_Classes.h5'))
-    __save_h5('data', feats.cpu().numpy(), 'f',
+    __save_h5('data', feats, 'f',
             os.path.join(save_path, f'{cfg.DATA.DATASET_NAME}_{val_type}_Feats.h5'))
 
     return True
