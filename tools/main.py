@@ -64,7 +64,7 @@ def train(cfg, train=True):
         )
     # save embeddings after training for all val types
 
-    model = checkpointer.load()
+    checkpointer.load()
 
     test_dataset_root = os.path.split(cfg.DATA.TEST_IMG_SOURCE)[0]
     for type in cfg.VALIDATION.TYPES:
