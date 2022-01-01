@@ -66,7 +66,7 @@ def do_train(
                 best_iteration = iteration
                 logger.info(f'Best iteration {iteration}: recall@1: {best_recall:.3f}')
                 checkpointer.save(f"best_model")
-                checkpointer.tag_last_checkpoint()
+                checkpointer.tag_last_checkpoint("best_model.pth")
             else:
                 logger.info(f'Recall@1 at iteration {iteration:06d}: {recall_curr:.3f}')
 

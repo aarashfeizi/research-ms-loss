@@ -81,6 +81,7 @@ class Checkpointer(object):
     def tag_last_checkpoint(self, last_filename):
         save_file = os.path.join(self.save_dir, "last_checkpoint")
         with open(save_file, "w") as f:
+            last_filename = os.path.join(self.save_dir, last_filename)
             f.write(last_filename)
 
     def _load_file(self, f):
