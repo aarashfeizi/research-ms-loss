@@ -150,7 +150,7 @@ def save_embs(
 
     best_recall = recall_curr
 
-    logger.info(f'{cfg.VALIDATION.TYPE} Recall@1: {best_recall:.3f}')
+    logger.info(f'{val_type} Recall@1: {best_recall:.3f}')
 
     save_path = cfg.SAVE_DIR
     __save_h5('data', labels, 'i8',
