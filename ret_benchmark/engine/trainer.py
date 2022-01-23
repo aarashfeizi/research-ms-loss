@@ -122,7 +122,7 @@ def do_train(
             recall_curr = ret_metric.recall_k(1)
             auc_curr = calc_auroc(embeddings=feats, labels=torch.tensor(labels))
 
-            if recall_curr > best_recall:
+            if auc_curr > best_auc:
                 best_recall = recall_curr
                 best_auc = auc_curr
                 best_iteration = iteration
