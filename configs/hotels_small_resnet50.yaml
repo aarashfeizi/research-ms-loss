@@ -24,8 +24,8 @@ SOLVER:
   
 DATA:
   DATASET_NAME: hotels
-  TRAIN_IMG_SOURCE: ../../datasets/hotels50k/train.txt
-  TEST_IMG_SOURCE: ../../datasets/hotels50k/val1.txt
+  TRAIN_IMG_SOURCE: ../../datasets/hotels50k/train_small.txt
+  TEST_IMG_SOURCE: ../../datasets/hotels50k/val1_small.txt
   TRAIN_BATCHSIZE: 80
   TEST_BATCHSIZE: 256
   NUM_WORKERS: 8
@@ -33,4 +33,4 @@ DATA:
 
 VALIDATION:
   VERBOSE: 200
-  TYPES: ['val1.txt', 'val2.txt', 'val3.txt', 'val4.txt']
+  TYPES: ['val1_small.txt', 'val2_small.txt', 'val3_small.txt', 'val4_small.txt']
