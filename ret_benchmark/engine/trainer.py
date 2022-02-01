@@ -67,7 +67,9 @@ def get_xs_ys(bce_labels, k=1):
 def calc_auroc(embeddings, labels):
     from sklearn.metrics import roc_auc_score
     bce_labels = make_batch_bce_labels(labels)
+    print('Calculating cosine sims')
     similarities = cosine_similarity(embeddings)
+    print('Done calculating cosine sims')
 
     xs, ys = get_xs_ys(bce_labels)
 
@@ -116,10 +118,11 @@ def do_train(
             labels = val_loader.dataset.label_list
             labels = np.array([int(k) for k in labels])
             feats = feat_extractor(model, val_loader, logger=logger)
-
+            print('Beginning ret metric!')
             ret_metric = RetMetric(feats=feats, labels=labels)
 
             recall_curr = ret_metric.recall_k(1)
+            print('Beginning auroc metric!')
             auc_curr = calc_auroc(embeddings=feats, labels=torch.tensor(labels))
 
             if auc_curr > best_auc:

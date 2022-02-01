@@ -32,5 +32,5 @@ DATA:
   NUM_INSTANCES: 5
 
 VALIDATION:
-  VERBOSE: 200
+  VERBOSE: 15000
   TYPES: ['val1.txt', 'val2.txt', 'val3.txt', 'val4.txt']
