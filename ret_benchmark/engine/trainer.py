@@ -119,7 +119,7 @@ def do_train(
             labels = np.array([int(k) for k in labels])
             feats = feat_extractor(model, val_loader, logger=logger)
             print('Beginning ret metric!')
-            ret_metric = RetMetric(feats=feats, labels=labels)
+            ret_metric = RetMetric(feats=feats, labels=labels, ks=[1])
 
             recall_curr = ret_metric.recall_k(1)
             print('Beginning auroc metric!')
@@ -214,7 +214,7 @@ def save_embs(
     labels = np.array([int(k) for k in labels])
     feats = feat_extractor(model, val_loader, logger=logger)
 
-    ret_metric = RetMetric(feats=feats, labels=labels)
+    ret_metric = RetMetric(feats=feats, labels=labels, ks=[1])
     recall_curr = ret_metric.recall_k(1)
 
     best_recall = recall_curr
