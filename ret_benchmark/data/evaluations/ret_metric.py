@@ -6,7 +6,7 @@
 # This source code is licensed under the LICENSE file in the root directory of this source tree.
 
 import numpy as np
-
+import torch
 
 class RetMetric(object):
     def __init__(self, feats, labels):
@@ -26,7 +26,9 @@ class RetMetric(object):
             self.gallery_feats = self.query_feats = feats
             self.gallery_labels = self.query_labels = labels
 
-        self.sim_mat = np.matmul(self.query_feats, np.transpose(self.gallery_feats))
+        print('computing sim_mat')
+        self.sim_mat = np.array(torch.matmul(torch.tensor(self.query_feats), torch.tensor(self.gallery_feats).t()))
+        print('done computing sim_mat!')
 
     def recall_k(self, k=1):
         m = len(self.sim_mat)
