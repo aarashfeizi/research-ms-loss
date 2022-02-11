@@ -28,14 +28,33 @@ class RetMetric(object):
             self.gallery_labels = self.query_labels = labels
 
         # print('computing sim_mat')
-        # # self.sim_mat = np.array(torch.matmul(torch.tensor(self.query_feats), torch.tensor(self.gallery_feats).t()))
+        # self.sim_mat = np.array(torch.matmul(torch.tensor(self.query_feats), torch.tensor(self.gallery_feats).t()))
         # print('done computing sim_mat!')
-        print('computing r@1')
-        self.recall_at_k_dict = self.get_recall_at_k(ks)
-        print('done computing r@1')
+        # print('computing r@1')
+        # self.recall_at_k_dict = self.get_recall_at_k(ks)
+        # print('done computing r@1')
+
+        print('computing sim_mat')
+        self.sim_mat = np.array(torch.matmul(torch.tensor(self.query_feats), torch.tensor(self.gallery_feats).t()))
+        print('done computing sim_mat!')
 
     def recall_k(self, k=1):
-        return self.recall_at_k_dict[k]
+        m = len(self.sim_mat)
+
+        match_counter = 0
+
+        for i in range(m):
+            pos_sim = self.sim_mat[i][self.gallery_labels == self.query_labels[i]]
+            neg_sim = self.sim_mat[i][self.gallery_labels != self.query_labels[i]]
+
+            thresh = np.sort(pos_sim)[-2] if self.is_equal_query else np.max(pos_sim)
+
+            if np.sum(neg_sim > thresh) < k:
+                match_counter += 1
+        return float(match_counter) / m
+
+    # def recall_k(self, k=1):
+    #     return self.recall_at_k_dict[k]
 
     def get_faiss_knn(self, k=1500, gpu=False):  # method "cosine" or "euclidean"
         assert self.gallery_feats.dtype == np.float32

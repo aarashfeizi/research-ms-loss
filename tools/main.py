@@ -64,19 +64,19 @@ def train(cfg, train=True):
         )
     # save embeddings after training for all val types
 
-    checkpointer.load()
+    # checkpointer.load()
 
-    test_dataset_root = os.path.split(cfg.DATA.TEST_IMG_SOURCE)[0]
-    for type in cfg.VALIDATION.TYPES:
-
-        cfg.DATA.TEST_IMG_SOURCE = os.path.join(test_dataset_root, type)
-        val_loader = build_data(cfg, is_train=False)
-
-        save_embs(
-            cfg,
-            model,
-            val_loader,
-            logger)
+    # test_dataset_root = os.path.split(cfg.DATA.TEST_IMG_SOURCE)[0]
+    # for type in cfg.VALIDATION.TYPES:
+    #
+    #     cfg.DATA.TEST_IMG_SOURCE = os.path.join(test_dataset_root, type)
+    #     val_loader = build_data(cfg, is_train=False)
+    #
+    #     save_embs(
+    #         cfg,
+    #         model,
+    #         val_loader,
+    #         logger)
 
 
 
